@@ -14,11 +14,11 @@ const Navbar = () => {
                 <Search/>
             </div>
             <div className='flex gap-3 text-xl font-serif'>
-                <Link to='/'>Home</Link>
-                <Link to='/category/:mens'>Mens</Link>
-                <Link to ='/category/:womens'>Womes</Link>
-                <Link to = '/category/:kids'>Kids</Link>
-                <Link to = '/products'>Products</Link>
+                <Link to='/'></Link>
+                <Link to='/category/:beauty'>Beauty</Link>
+                <Link to ='/category/:fragrance'>Fragrance</Link>
+                <Link to = '/category/:furniture'>Furniture</Link>
+                <Link to = '/category/:groceries'>Groceries</Link>
             </div>
             <div className='flex gap-2'>
                 <Link to='/cart'>Cart</Link>
