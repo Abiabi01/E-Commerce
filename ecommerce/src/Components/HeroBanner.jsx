@@ -1,37 +1,80 @@
-import React, { useEffect,useState } from "react";
-import axios from "axios";
-import bg from '../assets/bg.png'
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
+
 const HeroBanner = () => {
-    const [data,setData] = useState([])
-    useEffect(() => {
-        const fetchData = async () => {
-            const response = await axios.get("https://dummyjson.com/products")
-            const data= response.data.products
-            setData(data)
-            // console.log(data)
-            
-        }
-        fetchData()
-    })
-    
-    return(
-        <div className="flex items-center justify-center flex-col mt-4">
-            <p className="text-2xl">Lets' Shop to the </p>
-            <p className="m-2 w-64 text-3xl rounded text-center bg-gradient-to-r from-pink-300 to-indigo-300 font-sans font-normal">Best Products!!!</p>
-           {data.filter((item) => item.id === 3).map((item) => (
-           <div className="flex flex-row w-full gap-0" style={{backgroundImage: `url(${bg})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat'}}>
-            <div className="flex items-start justify-start">
-                <img key={item.id} src={item.images[0]} alt="hero-img" className="w-md h-md"/>   
-            </div>
-             <div className="flex items-center justify-center flex-col w-96 h-64 mt-28 rounded-xl">
-                <p className="text-3xl font-semibold">{item.title}</p>
-                <p className="p-2 pl-4 items-center justify-center font-semibold text-black">{item.description}</p>
-                
-            </div>
-           </div>
-           ))}
+  const [product, setProduct] = useState(null);
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const response = await axios.get("https://dummyjson.com/products/4"); 
+        setProduct(response.data);
+      } catch (e) {
+        console.log("Error loading hero product:", e);
+      }
+      
+    };
+    fetchProduct();
+  }, []);
+
+  return (
+    <div className="relative w-full overflow-hidden bg-gradient-to-r from-pink-200 via-purple-200 to-blue-200 py-20">
+      <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+        <div className="animate-fadeIn">
+          <p className="bg-white w-fit px-4 py-1 rounded-full text-sm text-purple-700 font-semibold shadow">
+            SHOP TRENDING CATEGORIES
+          </p>
+          <h1 className="text-4xl md:text-4xl font-bold mt-4 text-gray-900 leading-tight">
+            Explore Top Deals in  
+            <span className="text-purple-500"> Beauty</span>,  
+            <span className="text-pink-500"> Fragrance</span>,  
+            <span className="text-blue-500"> Furniture </span>  
+             & More
+          </h1>
+          <p className="text-gray-700 mt-4 text-lg leading-relaxed">
+            Discover high-quality products across beauty, fragrance, groceries, 
+            and home decor — all at unbeatable prices.
+          </p>
+          <div className="flex gap-4 mt-8">
+            <Link
+              to="/products"
+              className="bg-purple-700 text-white px-6 py-3 rounded-xl font-semibold hover:bg-purple-800 hover:scale-105 transition transform duration-300">
+              Shop All Products
+            </Link>
+             
+            <Link
+              to="/category/beauty"
+              className="border border-gray-800 px-6 py-3 rounded-xl font-semibold hover:bg-gray-900 hover:text-white hover:scale-105 transition transform duration-300">
+              Explore Categories
+            </Link>               
+          </div>
         </div>
-    )
-}
-export default HeroBanner   
+        <div className="flex flex-col items-center relative">
+          {product ? (
+            <>
+              <img
+                src={product.thumbnail}
+                alt={product.title}
+                className="w-[320px] md:w-[420px] rounded-2xl shadow-md hover:scale-105 transition-transform duration-500"/>
+              <p className="mt-5 text-2xl font-semibold text-gray-900 text-center">
+                {product.title}
+              </p>
+              <p className="text-lg text-purple-700 font-bold">
+                ${product.price}
+              </p>
+              <Link
+                to={`/product/${product.id}`}
+                className="mt-4 bg-pink-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-pink-700 transition">
+                Shop This Product
+              </Link>
+            </>
+          ) : (
+            <p className="text-gray-600">Loading product...</p>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default HeroBanner;
