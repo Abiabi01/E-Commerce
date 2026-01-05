@@ -62,7 +62,7 @@ const CategoryBlocks = () => {
             </div>
           </Link>
         ))}
-      </div>
+              </div>
     </div>
   );
 };
