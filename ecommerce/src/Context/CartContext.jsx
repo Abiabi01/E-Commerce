@@ -2,6 +2,14 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 const CartContext = createContext();
 
+export const useCart = () => {
+  const context = useContext(CartContext);
+  if (!context) {
+    throw new Error("useCart must be used within a CartProvider");
+  }
+  return context;
+};
+
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState(() => {
     const storedCart = localStorage.getItem("cartItems");
@@ -15,21 +23,28 @@ export const CartProvider = ({ children }) => {
 
   // ADD TO CART
   const addToCart = (product) => {
-    setCartItems((prev) => {
-      const existing = prev.find((item) => item.id === product.id);
+  setCartItems((prev) => {
+    const existing = prev.find((item) => item.id === product.id);
 
-      if (existing) {
-        return prev.map((item) =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
-      }
-
-      return [...prev, { ...product, quantity: 1 }];
-    });
-  };
-
+    if (existing) {
+      return prev.map((item) =>
+        item.id === product.id
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
+      );
+    }
+    return [
+      ...prev,
+      {
+        id: product.id,
+        title: product.title,
+        price: product.price,
+        thumbnail: product.thumbnail, 
+        quantity: 1,
+      },
+    ];
+  });
+};
   // REMOVE FROM CART
   const removeFromCart = (id) => {
     setCartItems((prev) => prev.filter((item) => item.id !== id));
@@ -86,5 +101,3 @@ export const CartProvider = ({ children }) => {
   );
 };
 
-// CUSTOM HOOK
-export const useCart = () => useContext(CartContext);

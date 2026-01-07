@@ -2,8 +2,11 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import Search from './Search'
 import logo from '../assets/logo.png'
+import { useCart } from '../Context/CartContext'
+import { ShoppingCart, User2Icon } from 'lucide-react'
 
 const Navbar = () => {
+    const {totalItems} = useCart()
     return (
         <div className='flex flex-row w-full h-20 shadow-lg items-center justify-between px-10'>
             <div className='flex items-center gap-3'>
@@ -15,14 +18,14 @@ const Navbar = () => {
             <Search />
             <div className='flex gap-5 text-xl font-serif'>
                 <Link to='/category/beauty'>Beauty</Link>
-                <Link to='/category/fragrance'>Fragrance</Link>
+                <Link to='/category/fragrances'>Fragrance</Link>
                 <Link to='/category/furniture'>Furniture</Link>
                 <Link to='/category/groceries'>Groceries</Link>
-                <Link to='/category/collections'>Collections</Link>
             </div>
             <div className='flex gap-5 text-xl font-serif'>
-                <Link to='/cart'>Cart</Link>
-                <Link to='/login'>Login</Link>
+                <Link to='/cart'>
+                <ShoppingCart/></Link>
+                <Link to='/login'><User2Icon/></Link>
             </div>
         </div>
     )

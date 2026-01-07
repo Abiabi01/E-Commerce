@@ -9,7 +9,7 @@ const categories = [
   },
   {
     name: "Fragrance",
-    path: "fragrance",
+    path: "fragrances",
     image:
       "https://images.unsplash.com/photo-1519669011783-4eaa95fa1b7d",
   },

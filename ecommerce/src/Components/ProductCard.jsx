@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useCart } from "../Context/CartContext";
 
 const ProductCard = ({ product }) => {
 
@@ -52,7 +53,7 @@ const ProductCard = ({ product }) => {
             View
           </Link>
 
-          <button
+          <button onClick={() => addToCart(product.id)}
             className="flex-1 bg-purple-500 text-white py-2 rounded-lg font-medium hover:bg-purple-500 transition"
           >
             Add to Cart
