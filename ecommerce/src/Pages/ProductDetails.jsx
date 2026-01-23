@@ -1,7 +1,9 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useCart } from "../Context/CartContext";
 
 const ProductDetails = () => {
+  const {addToCart} = useCart()
   const { id } = useParams(); // product id from URL
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -12,6 +14,8 @@ const ProductDetails = () => {
       try {
         const res = await fetch(`https://dummyjson.com/products/${id}`);
         const data = await res.json();
+        console.log((data));
+        
         setProduct(data);
       } catch (error) {
         console.error("Error fetching product details:", error);
@@ -90,7 +94,7 @@ const ProductDetails = () => {
 
         {/* ACTION BUTTONS */}
         <div className="flex gap-4 mt-8">
-          <button className="bg-purple-500 text-white px-6 py-3 rounded-xl font-semibold hover:bg-purple-500 transition">
+          <button onClick={() => addToCart(product)} className="bg-purple-500 text-white px-6 py-3 rounded-xl font-semibold hover:bg-purple-500 transition">
             Add to Cart
           </button>
 
