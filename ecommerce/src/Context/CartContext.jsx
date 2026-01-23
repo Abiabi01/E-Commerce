@@ -11,9 +11,29 @@ export const useCart = () => {
 };
 
 export const CartProvider = ({ children }) => {
+  const safeNumber = (v) => {
+    const n = Number(v);
+    return Number.isFinite(n) ? n : 0;
+  };
+
+  const sanitizeItem = (item) => ({
+    id: item.id,
+    title: item.title || "Untitled",
+    price: safeNumber(item.price),
+    thumbnail: item.thumbnail || "",
+    quantity: Math.max(1, safeNumber(item.quantity)),
+  });
+
   const [cartItems, setCartItems] = useState(() => {
     const storedCart = localStorage.getItem("cartItems");
-    return storedCart ? JSON.parse(storedCart) : [];
+    if (!storedCart) return [];
+    try {
+      const parsed = JSON.parse(storedCart);
+      if (!Array.isArray(parsed)) return [];
+      return parsed.map(sanitizeItem);
+    } catch (e) {
+      return [];
+    }
   });
 
   // Save cart to localStorage
@@ -23,28 +43,30 @@ export const CartProvider = ({ children }) => {
 
   // ADD TO CART
   const addToCart = (product) => {
-  setCartItems((prev) => {
-    const existing = prev.find((item) => item.id === product.id);
+    if (!product || typeof product !== "object") return;
+    setCartItems((prev) => {
+      const existing = prev.find((item) => item.id === product.id);
 
-    if (existing) {
-      return prev.map((item) =>
-        item.id === product.id
-          ? { ...item, quantity: item.quantity + 1 }
-          : item
-      );
-    }
-    return [
-      ...prev,
-      {
-        id: product.id,
-        title: product.title,
-        price: product.price,
-        thumbnail: product.thumbnail, 
-        quantity: 1,
-      },
-    ];
-  });
-};
+      if (existing) {
+        return prev.map((item) =>
+          item.id === product.id
+            ? { ...item, quantity: Number(item.quantity) + 1 }
+            : item
+        );
+      }
+
+      return [
+        ...prev,
+        sanitizeItem({
+          id: product.id,
+          title: product.title,
+          price: product.price,
+          thumbnail: product.thumbnail,
+          quantity: 1,
+        }),
+      ];
+    });
+  };
   // REMOVE FROM CART
   const removeFromCart = (id) => {
     setCartItems((prev) => prev.filter((item) => item.id !== id));
@@ -55,7 +77,7 @@ export const CartProvider = ({ children }) => {
     setCartItems((prev) =>
       prev.map((item) =>
         item.id === id
-          ? { ...item, quantity: item.quantity + 1 }
+          ? { ...item, quantity: Number(item.quantity) + 1 }
           : item
       )
     );
@@ -66,7 +88,7 @@ export const CartProvider = ({ children }) => {
     setCartItems((prev) =>
       prev.map((item) =>
         item.id === id && item.quantity > 1
-          ? { ...item, quantity: item.quantity - 1 }
+          ? { ...item, quantity: Number(item.quantity) - 1 }
           : item
       )
     );
@@ -74,13 +96,13 @@ export const CartProvider = ({ children }) => {
 
   // TOTAL ITEMS COUNT
   const totalItems = cartItems.reduce(
-    (total, item) => total + item.quantity,
+    (total, item) => total + safeNumber(item.quantity),
     0
   );
 
   // TOTAL PRICE
   const totalPrice = cartItems.reduce(
-    (total, item) => total + item.price * item.quantity,
+    (total, item) => total + safeNumber(item.price) * safeNumber(item.quantity),
     0
   );
 

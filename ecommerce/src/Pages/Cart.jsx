@@ -6,6 +6,7 @@ const Cart = () => {
     decreaseQty,
     removeFromCart,
     totalPrice,
+    totalItems,
   } = useCart();
 
   // EMPTY CART
@@ -82,9 +83,7 @@ const Cart = () => {
 
           <div className="flex justify-between mb-2">
             <span>Total Items</span>
-            <span>{cartItems.length}</span><span>
-              {cartItems.reduce((sum, item) => sum + item.quantity, 0)}
-            </span>
+            <span>{totalItems}</span>
           </div>
 
           <div className="flex justify-between mb-4">
