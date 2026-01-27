@@ -1,31 +1,5 @@
 import { Link } from "react-router-dom";
-
-const categories = [
-  {
-    name: "Beauty",
-    path: "beauty",
-    image:
-      "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9",
-  },
-  {
-    name: "Fragrance",
-    path: "fragrances",
-    image:
-      "https://images.unsplash.com/photo-1519669011783-4eaa95fa1b7d",
-  },
-  {
-    name: "Furniture",
-    path: "furniture",
-    image:
-      "https://images.unsplash.com/photo-1586023492125-27b2c045efd7",
-  },
-  {
-    name: "Groceries",
-    path: "groceries",
-    image:
-      "https://images.unsplash.com/photo-1542838132-92c53300491e",
-  },
-];
+import { CATEGORIES } from "../utils/constants";
 
 const CategoryBlocks = () => {
   return (
@@ -35,17 +9,19 @@ const CategoryBlocks = () => {
       </h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-        {categories.map((cat) => (
+        {CATEGORIES.map((cat) => (
           <Link
             key={cat.path}
             to={`/category/${cat.path}`}
             className="group relative h-64 rounded-2xl overflow-hidden shadow-lg"
+            aria-label={`View ${cat.name} products`}
           >
             {/* BACKGROUND IMAGE */}
             <img
               src={cat.image}
               alt={cat.name}
               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+              loading="lazy"
             />
 
             {/* GRADIENT OVERLAY */}
@@ -62,7 +38,7 @@ const CategoryBlocks = () => {
             </div>
           </Link>
         ))}
-              </div>
+      </div>
     </div>
   );
 };

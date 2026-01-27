@@ -1,19 +1,19 @@
 import { Link } from "react-router-dom";
 import { useCart } from "../Context/CartContext";
+import { formatPrice } from "../utils/format";
 
 const ProductCard = ({ product }) => {
-
-  const {addToCart} = useCart()
+  const { addToCart } = useCart();
 
   return (
     <div className="group bg-blue-100 rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition duration-300">
-
       {/* IMAGE */}
       <div className="relative h-48 overflow-hidden">
         <img
           src={product.thumbnail}
           alt={product.title}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+          loading="lazy"
         />
 
         {/* DISCOUNT BADGE */}
@@ -26,7 +26,7 @@ const ProductCard = ({ product }) => {
 
       {/* CONTENT */}
       <div className="p-4">
-        <h3 className="text-lg font-semibold text-gray-900 truncate">
+        <h3 className="text-lg font-semibold text-gray-900 truncate" title={product.title}>
           {product.title}
         </h3>
 
@@ -37,10 +37,10 @@ const ProductCard = ({ product }) => {
         {/* PRICE & RATING */}
         <div className="flex items-center justify-between mt-3">
           <p className="text-xl font-bold text-purple-500">
-            ${product.price}
+            {formatPrice(product.price)}
           </p>
 
-          <span className="text-sm text-yellow-500 font-semibold">
+          <span className="text-sm text-yellow-500 font-semibold" aria-label={`Rating: ${product.rating} out of 5 stars`}>
             ⭐ {product.rating}
           </span>
         </div>
@@ -49,12 +49,16 @@ const ProductCard = ({ product }) => {
         <div className="flex gap-3 mt-4">
           <Link
             to={`/product/${product.id}`}
-            className="flex-1 text-center border border-purple-500 text-purple-500 py-2 rounded-lg font-medium hover:bg-purple-500 hover:text-white transition">
+            className="flex-1 text-center border border-purple-500 text-purple-500 py-2 rounded-lg font-medium hover:bg-purple-500 hover:text-white transition"
+            aria-label={`View details for ${product.title}`}
+          >
             View
           </Link>
 
-          <button onClick={() => addToCart(product)}
-            className="flex-1 bg-purple-500 text-white py-2 rounded-lg font-medium hover:bg-purple-500 transition"
+          <button
+            onClick={() => addToCart(product)}
+            className="flex-1 bg-purple-500 text-white py-2 rounded-lg font-medium hover:bg-purple-600 transition"
+            aria-label={`Add ${product.title} to cart`}
           >
             Add to Cart
           </button>

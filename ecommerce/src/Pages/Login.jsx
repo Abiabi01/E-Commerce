@@ -15,17 +15,17 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    login({ email });
-    navigate("/");
 
-    // basic validation (auth logic comes later)
+    // Validate FIRST
     if (!email || !password) {
       setError("Please fill in all fields");
       return;
     }
 
+    // THEN login
     setError("");
-    console.log("Login data:", { email, password });
+    login({ email });
+    navigate("/");
   };
 
   return (

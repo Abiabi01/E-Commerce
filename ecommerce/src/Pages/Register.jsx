@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../Context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 
@@ -18,10 +18,7 @@ const Register = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    register({ name, email });
-    navigate("/");
-
-    // basic frontend validation
+    // Validate FIRST
     if (!name || !email || !password || !confirmPassword) {
       setError("Please fill in all fields");
       return;
@@ -32,12 +29,10 @@ const Register = () => {
       return;
     }
 
+    // THEN register
     setError("");
-    console.log("Register data:", {
-      name,
-      email,
-      password,
-    });
+    register({ name, email });
+    navigate("/");
   };
 
   return (

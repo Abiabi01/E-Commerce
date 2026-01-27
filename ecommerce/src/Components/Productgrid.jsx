@@ -1,22 +1,20 @@
 import ProductCard from "./ProductCard";
-const ProductsGrid = ({ products, loading = false }) => {
+import Spinner from "./Spinner";
 
+const ProductsGrid = ({ products, loading = false }) => {
   // LOADING STATE
   if (loading) {
-    return (
-      <div className="text-center py-10 text-gray-500">
-        Loading products...
-      </div>
-    );
+    return <Spinner size="md" />;
   }
 
   // EMPTY STATE
   if (!products || products.length === 0) {
     return (
       <div className="text-center py-10 text-gray-500">
-        No products found
+        <p className="text-lg">No products found</p>
+        <p className="text-sm mt-2">Try adjusting your search filters</p>
       </div>
-    )
+    );
   }
 
   return (
