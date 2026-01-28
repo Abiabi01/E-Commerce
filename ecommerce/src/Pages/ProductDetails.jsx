@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useCart } from "../Context/CartContext";
 import Spinner from "../Components/Spinner";
@@ -9,9 +9,15 @@ import { API_BASE_URL } from "../utils/constants";
 const ProductDetails = () => {
   const { addToCart } = useCart();
   const { id } = useParams();
+  const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const handleBuyNow = () => {
+    addToCart(product);
+    navigate('/cart');
+  };
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -123,6 +129,7 @@ const ProductDetails = () => {
           </button>
 
           <button 
+            onClick={handleBuyNow}
             className="border border-gray-800 px-6 py-3 rounded-xl font-semibold hover:bg-gray-900 hover:text-white transition"
             aria-label="Buy now"
           >
