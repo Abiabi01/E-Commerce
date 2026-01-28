@@ -24,8 +24,12 @@ const Login = () => {
 
     // THEN login
     setError("");
-    login({ email });
-    navigate("/");
+    try {
+      login({ email, password });
+      navigate("/");
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   return (

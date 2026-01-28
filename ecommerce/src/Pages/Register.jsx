@@ -31,8 +31,12 @@ const Register = () => {
 
     // THEN register
     setError("");
-    register({ name, email });
-    navigate("/");
+    try {
+      register({ name, email, password });
+      navigate("/");
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   return (

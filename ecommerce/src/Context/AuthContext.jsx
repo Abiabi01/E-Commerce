@@ -14,24 +14,60 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   // LOGIN
-  const login = ({ email }) => {
+  const login = ({ email, password }) => {
+    // Get registered users from localStorage
+    const registeredUsers = JSON.parse(localStorage.getItem("registeredUsers") || "[]");
+    
+    // Find user with matching email
+    const user = registeredUsers.find(u => u.email === email);
+    
+    // Check if user exists and password matches
+    if (!user) {
+      throw new Error("No account found with this email");
+    }
+    
+    if (user.password !== password) {
+      throw new Error("Incorrect password");
+    }
+    
+    // Log in the user
     const loggedInUser = {
-      email,
+      name: user.name,
+      email: user.email,
     };
-
+    
     setUser(loggedInUser);
     localStorage.setItem("user", JSON.stringify(loggedInUser));
   };
 
-  // REGISTER (same as login for frontend-only)
-  const register = ({ name, email }) => {
+  // REGISTER
+  const register = ({ name, email, password }) => {
+    // Get existing users from localStorage
+    const existingUsers = JSON.parse(localStorage.getItem("registeredUsers") || "[]");
+    
+    // Check if user already exists
+    if (existingUsers.find(user => user.email === email)) {
+      throw new Error("User with this email already exists");
+    }
+    
+    // Add new user
     const newUser = {
       name,
       email,
+      password, // In real app, this should be hashed
     };
-
-    setUser(newUser);
-    localStorage.setItem("user", JSON.stringify(newUser));
+    
+    existingUsers.push(newUser);
+    localStorage.setItem("registeredUsers", JSON.stringify(existingUsers));
+    
+    // Log in the user after registration
+    const loggedInUser = {
+      name,
+      email,
+    };
+    
+    setUser(loggedInUser);
+    localStorage.setItem("user", JSON.stringify(loggedInUser));
   };
 
   // LOGOUT
