@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Search from './Search';
-import logo from '../assets/logo.png';
+import logo from '../assets/Logo.png';
 import { useCart } from '../Context/CartContext';
 import { useAuth } from '../Context/AuthContext';
 import { ShoppingCart, User2Icon, LogOut } from 'lucide-react';
