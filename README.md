@@ -3,6 +3,8 @@
 A frontend-focused E-Commerce web application built using React.js.  
 This project demonstrates real-world React concepts such as Context API, custom hooks, protected routes, and reusable components.
 
+Live Demo: https://e-commerce-pearl-zeta-98.vercel.app/
+
 ---
 
 ## Features
