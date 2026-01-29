@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
 import { API_BASE_URL } from '../utils/constants';
 
 const SearchSuggestion = ({ query, onSelect }) => {
@@ -52,18 +51,23 @@ const SearchSuggestion = ({ query, onSelect }) => {
       )}
 
       {results.map((item) => (
-        <Link
+        <button
           key={item.id}
-          to={`/product/${item.id}`}
-          onClick={() => onSelect && onSelect()}
-          className='block border-0 p-2 rounded-xl text-sm font-sans hover:bg-gray-200 focus:outline-none focus:bg-gray-200'
+          type="button"
+          onMouseDown={() => {
+            if (onSelect) onSelect(item);
+          }}
+          onClick={() => {
+            if (onSelect) onSelect(item);
+          }}
+          className='w-full text-left border-0 p-2 rounded-xl text-sm font-sans hover:bg-gray-200 focus:outline-none focus:bg-gray-200'
           role="option"
           aria-selected="false"
           title={item.title}
         >
           {item.title.substring(0, 40)}
           {item.title.length > 40 ? '...' : ''}
-        </Link>
+        </button>
       ))}
     </div>
   );

@@ -10,9 +10,10 @@ const Search = () => {
   const debouncedText = useDebounce(text, 300);
   const navigate = useNavigate();
 
-  const onSelectSuggestion = () => {
+  const onSelectSuggestion = (item) => {
+    // console.log('Suggestion selected:', item);
+    setText(item?.title || '');
     setShow(false);
-    setText('');
   };
 
   const doSearch = () => {
@@ -36,12 +37,23 @@ const Search = () => {
     }
   };
 
+  const handleBlur = () => {
+    // Delay hiding so clicks on suggestions register first
+    setTimeout(() => setShow(false), 150);
+  };
+
   return (
     <div className='relative flex gap-2'>
       <input
         value={text}
-        onChange={(e) => setText(e.target.value)}
+        onChange={(e) => {
+          const v = e.target.value;
+          setText(v);
+          if (v && v.trim()) setShow(true);
+          else setShow(false);
+        }}
         onFocus={handleFocus}
+        onBlur={handleBlur}
         onKeyDown={onKeyDown}
         className='border-2 border-gray-400 rounded-xl w-48 h-8 p-2 text-black focus:outline-none focus:ring-2 focus:ring-purple-500'
         placeholder='Search products...'
